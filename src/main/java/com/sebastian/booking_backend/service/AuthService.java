@@ -16,7 +16,7 @@ public class AuthService {
 
     public AuthResponse register(AuthRequest req) {
         if (userRepository.existsByEmail(req.getEmail()))
-            throw new RuntimeException("E-Mail bereits registriert");
+            throw new RuntimeException("Email already registered");
         User user = new User();
         user.setEmail(req.getEmail());
         user.setName(req.getName());
@@ -28,9 +28,9 @@ public class AuthService {
 
     public AuthResponse login(AuthRequest req) {
         User user = userRepository.findByEmail(req.getEmail())
-                .orElseThrow(() -> new RuntimeException("Benutzer nicht gefunden"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
         if (!passwordEncoder.matches(req.getPassword(), user.getPassword()))
-            throw new RuntimeException("Falsches Passwort");
+            throw new RuntimeException("Invalid password");
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
         return new AuthResponse(token, user.getEmail(), user.getName(), user.getRole());
     }

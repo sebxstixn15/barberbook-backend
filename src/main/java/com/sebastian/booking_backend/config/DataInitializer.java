@@ -15,7 +15,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // Admin erstellen falls nicht vorhanden
+        // Create admin user if not present
         if (!userRepository.existsByEmail("admin@booking.at")) {
             User admin = new User();
             admin.setEmail("admin@booking.at");
@@ -23,16 +23,16 @@ public class DataInitializer implements CommandLineRunner {
             admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setRole("ADMIN");
             userRepository.save(admin);
-            System.out.println("✅ Admin erstellt: admin@booking.at / admin123");
+            System.out.println("✅ Admin created: admin@booking.at / admin123");
         } else {
-            // Admin existiert schon — stelle sicher dass role ADMIN ist
+            // Admin exists — make sure role is set to ADMIN
             userRepository.findByEmail("admin@booking.at").ifPresent(admin -> {
                 if (!"ADMIN".equals(admin.getRole())) {
                     admin.setRole("ADMIN");
                     userRepository.save(admin);
-                    System.out.println("✅ Admin-Rolle korrigiert!");
+                    System.out.println("✅ Admin role fixed!");
                 } else {
-                    System.out.println("✅ Admin bereits vorhanden: admin@booking.at / admin123");
+                    System.out.println("✅ Admin already exists: admin@booking.at / admin123");
                 }
             });
         }
