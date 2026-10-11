@@ -38,16 +38,24 @@ CREATE DATABASE booking_db;
 
 ### Configuration
 
-Edit `src/main/resources/application.properties`:
+Set the required environment variables before starting the application. Keep these values out of Git and use a long, random Base64 value for `JWT_SECRET`.
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/booking_db
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-
-jwt.secret=your-base64-encoded-secret
-jwt.expiration=86400000
+```bash
+export DB_URL='jdbc:mysql://localhost:3306/booking_db'
+export DB_USERNAME='your_username'
+export DB_PASSWORD='your_password'
+export JWT_SECRET='your-base64-encoded-secret'
 ```
+
+For local development only, an initial admin can be created deliberately:
+
+```bash
+export BOOTSTRAP_ADMIN_ENABLED=true
+export BOOTSTRAP_ADMIN_EMAIL='admin@example.com'
+export BOOTSTRAP_ADMIN_PASSWORD='choose-a-strong-password'
+```
+
+Admin bootstrapping is disabled by default. Never use a sample or shared admin password in a deployed environment.
 
 ### Run
 
@@ -56,10 +64,6 @@ mvn spring-boot:run
 ```
 
 The server starts on `http://localhost:8080`.
-
-On first run, an admin account is created automatically:
-- **Email:** `admin@booking.at`
-- **Password:** `admin123`
 
 ## API Endpoints
 
